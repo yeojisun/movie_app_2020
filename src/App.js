@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import Movie from "./Movie";
+import "./App.css";
 
 class App extends React.Component {
   state = {
@@ -25,22 +26,25 @@ class App extends React.Component {
   render() {
     const { isLoading, movies } = this.state;
     return (
-      <section class="container">
+      <section className="container">
         {isLoading ? (
-          <div class="loader">
-            <span class="loader_text">Loading...</span>
+          <div className="loader">
+            <span className="loader_text">Loading...</span>
           </div>
         ) : (
-          movies.map(movie => (
-            <Movie
-              key={movie.id}
-              id={movie.id}
-              year={movie.year}
-              title={movie.title}
-              summary={movie.summary}
-              poster={movie.medium_cover_image}
-            />
-          ))
+          <div className="movies">
+            {movies.map(movie => (
+              <Movie
+                key={movie.id}
+                id={movie.id}
+                year={movie.year}
+                title={movie.title}
+                summary={movie.summary}
+                poster={movie.medium_cover_image}
+                genres={movie.genres}
+              /> // 이 곳에서 보내주는 값과 받아야 하는 값이 꼭 일치하지 않는다. (Movie.js에서는 id값을 받지 않음. 그래도 키값은 꼭 보내줘야 한다.)
+            ))}
+          </div>
         )}
       </section>
     );
