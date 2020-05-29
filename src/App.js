@@ -1,48 +1,50 @@
-import React from 'react';
-import PropTypes from "prop-types";
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import axios from "axios";
+import Movie from "./Movie";
 
-function Food({name, picture, rating}){
-return <div>
-  <h1>i love {name}</h1>
-<h4>rating : {rating}/5.0</h4>
-  <img src={picture} alt={name}></img>
-</div>;
-}
-
-Food.propTypes = {
-  name:PropTypes.string.isRequired,
-  picture:PropTypes.string.isRequired,
-  rating:PropTypes.number.isRequired
-
-};
-
-function renderFood(dish){
-  // console.log(dish);
-  // 아래의 key 값은 내부에서 사용하기 위해 존재하는 prop이다.
-  return <Food key={dish.id} name={dish.name} picture={dish.image} rating={dish.rating}/>
-}
-
-class App extends React.Component{
+class App extends React.Component {
   state = {
-    count :0
+    isLoading: true,
+    movies: [],
   };
-
-  add = () =>{
-    this.setState(current => ({count:current.count+1}));
+  getMovies = async () => {
+    // async는 비동기 함수라는 것을 의미함.
+    const {
+      data: {
+        data: { movies },
+      },
+    } = await axios.get("https://yts-proxy.now.sh/list_movies.json");
+    this.setState({ movies, isLoading: false }); // {movies:movies}를 단축해서 {movies}라고 써도 된다.
   };
-  minus = () =>{
-    this.setState(current => ({count:current.count-1}));
-  };
-  render(){
-  return <div>
-    <h1>the number is: {this.state.count}</h1>
-    <button onClick={this.add}>add</button>
-    <button onClick={this.minus}>minus</button>
-  </div>
-  }
+  componentDidMount() {
+    this.getMovies();
+    // setTimeout(()=> {
+    //   this.setState({isLoading : false});
+    // }, 6000); // 6초뒤에 isLoading state값이 false가 된다.
+  } // 1. componentDidMount에서 data를 fetch한다.
+  render() {
+    const { isLoading, movies } = this.state;
+    return (
+      <section class="container">
+        {isLoading ? (
+          <div class="loader">
+            <span class="loader_text">Loading...</span>
+          </div>
+        ) : (
+          movies.map(movie => (
+            <Movie
+              key={movie.id}
+              id={movie.id}
+              year={movie.year}
+              title={movie.title}
+              summary={movie.summary}
+              poster={movie.medium_cover_image}
+            />
+          ))
+        )}
+      </section>
+    );
+  } // 2. api로부터 data를 fetching한 뒤에 data를 render한다.
 }
-
 
 export default App;
