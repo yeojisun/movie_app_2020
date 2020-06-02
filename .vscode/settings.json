@@ -1,4 +1,5 @@
 {
+  "launch": {},
   "editor.formatOnSave": true,
-  "launch": {}
+  "prettier.trailingComma": "none"
 }

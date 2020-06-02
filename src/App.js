@@ -6,15 +6,17 @@ import "./App.css";
 class App extends React.Component {
   state = {
     isLoading: true,
-    movies: [],
+    movies: []
   };
   getMovies = async () => {
     // async는 비동기 함수라는 것을 의미함.
     const {
       data: {
-        data: { movies },
-      },
-    } = await axios.get("https://yts-proxy.now.sh/list_movies.json");
+        data: { movies }
+      }
+    } = await axios.get(
+      "https://yts-proxy.now.sh/list_movies.json?sort_by=rating"
+    );
     this.setState({ movies, isLoading: false }); // {movies:movies}를 단축해서 {movies}라고 써도 된다.
   };
   componentDidMount() {

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./Movie.css";
 
-function Movie({ year, title, summary, poster, genres }) {
+function Movie({ year, title, summary, poster, genres = ["nope"] }) {
   return (
     <div className="movie">
       <img src={poster} alt={title} title={title} />
@@ -15,7 +15,7 @@ function Movie({ year, title, summary, poster, genres }) {
               {genre}
             </li>
           ))}
-          {/* map에는 index값을 키로 둬야 한다. */}
+          {/* map에는 index값을 키로 둬야 한다.  */}
         </ul>
         <p className="movie_summary">{summary.slice(0, 140)}...</p>
       </div>
@@ -29,7 +29,7 @@ Movie.propTypes = {
   title: PropTypes.string.isRequired,
   summary: PropTypes.string.isRequired,
   poster: PropTypes.string.isRequired,
-  genres: PropTypes.arrayOf(PropTypes.string).isRequired,
+  genres: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
 export default Movie;
